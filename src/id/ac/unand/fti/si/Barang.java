@@ -1,5 +1,7 @@
 package id.ac.unand.fti.si;
 
+import java.util.TreeMap;
+
 public class Barang {
 
 	private String SKU;
@@ -7,23 +9,40 @@ public class Barang {
 	private Integer stok;
 	private Integer hargaBeli;
 	private Integer hargaJual;
+	TreeMap<String, Integer> stockBarang = new TreeMap<>();
 	
 	
 	
 	
-	
-	public Barang(String sKU, String namaBarang, Integer stok, Integer hargaBeli, Integer hargaJual) {
-		super();
-		SKU = sKU;
-		this.namaBarang = namaBarang;
-		this.stok = stok;
-		this.hargaBeli = hargaBeli;
-		this.hargaJual = hargaJual;
-	}
-
-	Barang(){
+public Barang() {
 		
 	}
+	
+	public Barang(String sku, String nama, Integer stock, Integer harga_beli, Integer harga_jual) {
+		this.SKU=sku;
+		this.namaBarang=nama;
+		this.stok=stock;
+		this.hargaBeli=harga_beli;
+		this.hargaJual=harga_jual;
+	}
+	
+	public Barang(String sku, String nama, Integer harga_jual) {
+		this.SKU=sku;
+		this.namaBarang=nama;
+		this.hargaJual=harga_jual;
+	}
+	
+	public Barang(String nama, Integer stock, Integer harga_beli, Integer harga_jual) {
+		this.namaBarang=nama;
+		this.stok=stock;
+		this.hargaBeli=harga_beli;
+		this.hargaJual=harga_jual;
+	}
+	
+	public Barang(String nama, Integer jumlah) {
+		this.stockBarang.put(nama, jumlah);
+	}
+
 	
 	public String getSKU() {
 		return SKU;
