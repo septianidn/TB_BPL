@@ -18,7 +18,7 @@ public class Program {
 			
 			connection = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
 
-			if (conn != null) {
+			if (connection != null) {
 				System.out.println("OK");
 			} else {
 				System.out.println("NOT OK");
@@ -39,7 +39,36 @@ public class Program {
 
 				case "1":
 					
-					laporan.laporan();
+					int cek1 = 0;
+					
+					do {
+					System.out.println("\n||Laporan Penjualan");
+					System.out.println("\nSilakan Pilih Jenis Pengelompokan Penjualan");
+					System.out.println("1. Perhari");
+					System.out.println("2. perbulan");
+					
+					System.out.print("\nPilihan Anda ? ");
+					String pilih1 = scn.next();
+					
+					switch(pilih1) {
+					
+					case "1":
+						cek1 = 1;
+						laporan.laporanHari();
+						break;
+						
+					case "2":
+						cek1 = 1;
+						laporan.laporan();
+						break;
+						
+					default:
+						cek1 = 0;
+						System.out.print("\nPilihan Anda Salah, Silakan Pilih Lagi\n");
+						break;
+					
+					}
+					}while(cek1 == 0);
 					
 					System.out.print("\n\nKeluar Dari Aplikasi? (y/t) : ");
 					String tanya = scn.next();
@@ -58,8 +87,38 @@ public class Program {
 
 					break;
 				case "2":
+					int cek2 = 0;
+					
+					do {
+					System.out.println("\n||Laporan Keuntungan");
+					System.out.println("\nSilakan Pilih Jenis Pengelompokan Keuntungan");
+					System.out.println("1. Perhari");
+					System.out.println("2. perbulan");
+					
+					System.out.print("\nPilihan Anda ? ");
+					String pilih1 = scn.next();
+					
+					switch(pilih1) {
+					
+					case "1":
+						cek2 = 1;
+						laporan.keuntunganHari();
+						break;
+						
+					case "2":
+						cek2 = 1;
+						laporan.keuntungan();
+						break;
+						
+					default:
+						cek2 = 0;
+						System.out.print("\nPilihan Anda Salah, Silakan Pilih Lagi\n");
+						break;
+					
+					}
+					}while(cek2 == 0);
 
-					laporan.keuntungan();
+					
 					
 					System.out.print("\n\nKeluar Dari Aplikasi? (y/t) : ");
 					String tanya1 = scn.next();
@@ -86,6 +145,7 @@ public class Program {
 			} while (cek == 0);
 			
 			System.out.println("\nBye");
+
 			
 		} catch (SQLException e) {
 
