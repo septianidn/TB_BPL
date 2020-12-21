@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Restock {
 	Scanner scn = new Scanner(System.in);
 	DataRestock dataRestock;
+	KelolaBarang barang = new KelolaBarang();
 	
 	public Restock() {
 		try {
@@ -18,9 +19,10 @@ public class Restock {
 	//	Restok
 	public void restock() throws Exception {
 		
+		barang.getAll();
 		System.out.println("\n\n--RESTOCK BARANG--");
 		
-		System.out.print("SKU : ");
+		System.out.print("Masukkan SKU : ");
 		String sku = scn.next().toUpperCase();
 		
 		System.out.print("Stock baru : ");
@@ -28,7 +30,7 @@ public class Restock {
 		
 		if(dataRestock.restock(sku, stock) == 1) {
 			System.out.println("Restock success");
-			Main.mainMenu();
+			Main.menuBarang();
 		}
 		
 	}

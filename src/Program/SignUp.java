@@ -27,7 +27,7 @@ public class SignUp extends User{
 			System.out.print("Username : ");
 			String username = scann.next();
 
-			String dt = String.format("%tF", date);
+			String tanggal = String.format("%tF", date);
 
 			System.out.print("Email : ");
 			String email = scann.next();
@@ -38,7 +38,7 @@ public class SignUp extends User{
 			System.out.print("Konfirmasi password : ");
 			String confirm = scann.next();
 			
-			datauser = new dataUser(username, dt, email, password);
+			datauser = new dataUser(username, tanggal, email, password);
 			
 			if(userFunction.register(datauser,confirm) == 1) {
 				System.out.println("Akun berhasil dibuat");

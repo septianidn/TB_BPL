@@ -1,6 +1,9 @@
 package Program;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
+import java.util.Scanner;
 import java.util.TreeMap;
 
 public class UserFunction {
@@ -15,7 +18,12 @@ public class UserFunction {
 	User user;
 	Login logIn;
 	SignUp signup;
-
+	String username;
+	String password;
+	Random random = new Random();
+	Scanner scann = new Scanner(System.in);
+	Date date = new Date();
+	
 	public UserFunction() throws SQLException{
 		try {
 			
@@ -31,27 +39,42 @@ public class UserFunction {
 	}
 	
 	
-	public Integer login(dataUser datauser) {
+	public Integer login() throws Exception {
 		Integer login = 0;
+		Integer coba = 0;
+		
+		do {
+    	System.out.println("\n\n>>LOGIN>>");
+    	
+    	System.out.print("Username : ");
+		this.username = scann.next();
+		
+		System.out.print("Password : ");
+		this.password = scann.next();
+
+		String tanggal = String.format("%tF", date);
+
+		
 	
 		try {	
 			String query = "SELECT * FROM user WHERE username=? AND password=?";
 			statement = conn.prepareStatement(query);
-			statement.setString(1, datauser.username);
-			statement.setString(2, datauser.password);
+			statement.setString(1, username);
+			statement.setString(2, password);
 			ResultSet rs = statement.executeQuery();
 			
 			if(rs.next()) {	
 				try {
 					String sql = "UPDATE user SET login_terakhir=? WHERE username=?";
 					statement = conn.prepareStatement(sql);
-					statement.setString(1, datauser.date);
-					statement.setString(2, datauser.username);
+					statement.setString(1, tanggal);
+					statement.setString(2, username);
 					login = statement.executeUpdate();
 					
 					if(login == 1) {
-						dataUser.user = datauser.username;
-						dataUser.pass = datauser.password;
+						dataUser.user = username;
+						dataUser.pass = password;
+						return login;
 					}	
 				} 
 				catch (Exception e) {
@@ -60,32 +83,68 @@ public class UserFunction {
 				
 			} 
 			else {
-				if(Login.ulang>0) {
-					System.out.println("Username dan password yang anda masukkan salah");
+				coba++;
+				System.out.println("Username dan password yang anda masukkan salah");
+				if(coba==3) {
+					resetPassword();
 				} 
-				else if(Login.ulang <= 0) {
-					System.out.println("Password anda telah direset");
-					
-					user = new User();
-					logIn = new Login();
-					
-					try {	
-						String reset = "UPDATE user SET password=? WHERE username =?";
-						statement = conn.prepareStatement(reset);
-						statement.setString(1, logIn.randomString());
-						statement.setString(2, datauser.username);
-						statement.executeUpdate();	
-					} 
-					catch (SQLException e) {
-						System.out.println("Terjadi kesalahan");
-					}	
-				}
-			}			
+			
+			}		
+		
 		} 
 		catch (SQLException e) {
 			System.out.println("Terjadi kesalahan"+ e.getMessage());
-		}				
+		}	
+		
+		} while (coba>=0 && coba<=2);
 		return login;
+	}
+	
+	
+	public void resetPassword() throws Exception {
+		try {
+			String query = "SELECT * FROM user WHERE username=?";
+			statement = conn.prepareStatement(query);
+			statement.setString(1, username);
+			ResultSet rs = statement.executeQuery();
+			
+		if(rs.next()) {
+		String resetpass = "abcdefghijklmnopqrstuvwxyz1234567890";
+		String randompass = "";
+		int length = 8;
+		Random random = new Random();
+		char [] pass = new char [length];
+		
+		for (int a=0 ; a<length ; a++  ) {
+			pass[a] = resetpass.charAt(random.nextInt(resetpass.length()));
+		}
+		
+		for (int a=0 ; a<pass.length ; a++) {
+			randompass += pass[a];
+		}
+		System.out.println("--------------------------------------");
+		System.out.println("Password Anda telah di reset! ");
+		System.out.println("--------------------------------------");
+		
+		
+		
+		String reset = "UPDATE user SET password=? WHERE username =?";
+		statement = conn.prepareStatement(reset);
+		statement.setString(1, randompass);
+		statement.setString(2, this.username);
+		statement.executeUpdate();
+		
+		
+		}
+	else {
+	System.out.println("Username tidak ditemukan");		
+		}
+		Login.login();
+		}catch(SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		
 	}
 	
 	

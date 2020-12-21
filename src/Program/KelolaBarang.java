@@ -24,6 +24,9 @@ public class KelolaBarang {
 	
 	
 	public ArrayList<Barang> getAll() {
+		
+		
+		 System.out.println(" >> Tampilkan data Barang");
     	
 		ArrayList<Barang> listBarang = new ArrayList<>();
     	Statement statement;
@@ -52,7 +55,21 @@ public class KelolaBarang {
 			}
 			
 			
+			
+			
 			if(listBarang.isEmpty()) System.out.println("Data Barang kosong");
+			else {
+				   for( Barang barang : listBarang) {
+			        	System.out.println("\n===============================");
+			        	System.out.println("SKU : " + barang.getSKU());
+			        	System.out.println("Nama Barang : " + barang.getNamaBarang());
+			        	System.out.println("Stok : " + barang.getStok());
+			        	System.out.println("Harga Jual : " + barang.getHargaJual());
+			        	System.out.println("Harga Beli : " + barang.getHargaBeli());
+			        	System.out.println("===============================");
+			        	
+			        }
+			}
 			 
     		
 		} catch (SQLException e) {
@@ -62,11 +79,13 @@ public class KelolaBarang {
     	return listBarang;
     }
     
-    public int tambahData() {
+    public void tambahData() throws Exception {
+    	
+    	System.out.println(" >> Tambah Data Barang");
     	
     	Integer result = 0;
         System.out.print("SKU : ");
-        String sku = scanner.nextLine();
+        String sku = scanner.nextLine().toUpperCase();
         
         System.out.print("Nama Barang : ");
         String nama = scanner.nextLine();
@@ -91,15 +110,25 @@ public class KelolaBarang {
                     statement.setInt(5, hJual);
                     result = statement.executeUpdate();
                     
+                    if (result==1) {
+                    	System.out.println("Berhasil input data");
+        	        	Main.menuBarang();
+        	        }
+        	        else {
+        	        	System.out.println("Tidak berhasil menghapus data");
+        	        }
+                    
                 } catch (SQLException e) {
                     System.out.println(e.getMessage());
                 }
-    	return result;
+    	
     	
     	
     }
     
-    public ArrayList<Barang> cari() {
+    public void cari() throws Exception {
+    	
+    	System.out.println(" >> Cari Data Barang");
     	
     	ArrayList<Barang> listBarang = new ArrayList<>();
     	if(!getAll().isEmpty()) {
@@ -127,6 +156,17 @@ public class KelolaBarang {
 							rs.getInt("harga_jual")
 		        			);
 		        	listBarang.add(barang);
+		        	
+		        	  for( Barang brg : listBarang) {
+		  	        	System.out.println("SKU : " + brg.getSKU());
+		  	        	System.out.println("Nama Barang : " + brg.getNamaBarang());
+		  	        	System.out.println("Stok : " + brg.getStok());
+		  	        	System.out.println("Harga Beli : " + brg.getHargaBeli());
+		  	        	System.out.println("Harga Jual : " + brg.getHargaJual());
+		  	        	
+		  	        	
+		  	        } 
+		  	        Main.menuBarang();
 		        	}
 			
 		} catch (SQLException e) {
@@ -134,12 +174,16 @@ public class KelolaBarang {
 			e.printStackTrace();
 		}
     	}
-      return listBarang;
+      
       
     	
     }
     
-    public int edit() {
+    public void edit() throws Exception {
+    	
+    	System.out.println(" >> Edit Data Barang");
+    	
+    	getAll();
     	
     		Integer result=0;
             
@@ -182,23 +226,32 @@ public class KelolaBarang {
                 statement.setString(5, id);
                 result = statement.executeUpdate();
                 
-                
+                if(result==1) {
+                	System.out.println("Berhasil edit data");
+    	        	Main.menuBarang();
+    	        
+                }
              
             }
             else {
             	System.out.println("Data tidak ditemukan.");
             }
+       
             
             }catch (SQLException e) {
 				System.out.println(e.getMessage());
 			}
                   
-        return result;
+        
     	
     	
     }
     
-    public int hapus() {
+    public void hapus() throws Exception {
+    	
+    	System.out.println(" >> Hapus Data Barang");
+    	
+    	getAll();
     	
     	Integer result = 0;
     		
@@ -211,12 +264,18 @@ public class KelolaBarang {
               PreparedStatement statement = connection.prepareStatement(sql);
               statement.setString(1, id);
               result = statement.executeUpdate();
+              
+              if(result==1) {
+            		System.out.println("Berhasil hapus data");
+                	Main.menuBarang();
+                }  
+              
             
           }catch(SQLException e){
               System.out.println("Terjadi kesalahan dalam menghapus data");
           }
     	  
-    	  return result;
+    	 
     }
     
 

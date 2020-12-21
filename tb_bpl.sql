@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 02 Des 2020 pada 10.46
+-- Waktu pembuatan: 21 Des 2020 pada 18.35
 -- Versi server: 10.4.14-MariaDB
 -- Versi PHP: 7.3.23
 
@@ -36,6 +36,14 @@ CREATE TABLE `barang` (
   `harga_jual` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `barang`
+--
+
+INSERT INTO `barang` (`sku`, `nama`, `stock`, `harga_beli`, `harga_jual`) VALUES
+('B122', 'Pocky', 5, 7000, 8000),
+('B123', 'Lifebouy', 7, 2000, 2500);
+
 -- --------------------------------------------------------
 
 --
@@ -50,6 +58,14 @@ CREATE TABLE `detail_transaksi` (
   `harga` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data untuk tabel `detail_transaksi`
+--
+
+INSERT INTO `detail_transaksi` (`id`, `sku`, `noresi`, `jumlah`, `harga`) VALUES
+(2, 'B123', 'T1', 3, 7500),
+(3, 'B122', 'T2', 3, 24000);
+
 -- --------------------------------------------------------
 
 --
@@ -61,6 +77,14 @@ CREATE TABLE `transaksi` (
   `tanggal` date NOT NULL,
   `username` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `transaksi`
+--
+
+INSERT INTO `transaksi` (`noresi`, `tanggal`, `username`) VALUES
+('T1', '2020-12-22', 'sept'),
+('T2', '2020-12-22', 'sept');
 
 -- --------------------------------------------------------
 
@@ -74,6 +98,15 @@ CREATE TABLE `user` (
   `email` varchar(25) NOT NULL,
   `password` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data untuk tabel `user`
+--
+
+INSERT INTO `user` (`username`, `login_terakhir`, `email`, `password`) VALUES
+('Ari', '2020-12-21', 'ari@gmail.com', 'JxVygpviNLPTyJo'),
+('sep', '2020-12-21', 'tes@gmail.com', 'leztir63'),
+('sept', '2020-12-22', '123@gmail.com', '123');
 
 --
 -- Indexes for dumped tables
@@ -105,6 +138,16 @@ ALTER TABLE `transaksi`
 --
 ALTER TABLE `user`
   ADD PRIMARY KEY (`username`);
+
+--
+-- AUTO_INCREMENT untuk tabel yang dibuang
+--
+
+--
+-- AUTO_INCREMENT untuk tabel `detail_transaksi`
+--
+ALTER TABLE `detail_transaksi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)

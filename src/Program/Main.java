@@ -4,21 +4,27 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.InputMismatchException;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
 	static Date date = new Date();
 	static Scanner scanner = new Scanner(System.in);
+	static Locale lokal = new Locale("id", "ID");
+	static SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd MMMM, yyyy  HH:mm:ss", lokal);
+	static String tanggal = sdf.format(date);
 	
 	public static Integer landingPage() {
 		
 		Integer pilihan = 0;
-		
-		System.out.println("     Toko Selamat Pagi");
+		System.out.println(tanggal+"\n");
 		System.out.println("============================");
-		System.out.println(date+"\n");
+		System.out.println("  Aplikasi Kasir Toko Pojan");
+		System.out.println("============================\n");
+		
 		System.out.println("1. Login");
 		System.out.println("2. Register");
 		System.out.print("Tentukan pilihanmu : ");
@@ -30,14 +36,14 @@ public class Main {
 	
 	public static void mainMenu() throws Exception {
 		
-		Transaksi transaksi = new Transaksi();
+		KelolaTransaksi transaksi = new KelolaTransaksi();
 		
 		System.out.println("\n\n--DASHBOARD--");
-		System.out.println("1. Pengaturan");
-		System.out.println("2. Data Master Transaksi");
-		System.out.println("3. Data Master Barang");
-		System.out.println("4. Penjualan");
-		System.out.println("5. Laporan");
+		System.out.println("1. Pengelolaan Akun");
+		System.out.println("2. Pengelolaan Transaksi");
+		System.out.println("3. Pengelolaan Barang");
+		System.out.println("4. Menu Penjualan");
+		System.out.println("5. Menu Laporan");
 		System.out.println("6. Logout");
 		System.out.print("Tentukan pilihanmu : ");
 		
@@ -59,7 +65,7 @@ public class Main {
 					break;
 					
 				case 4: 
-					transaksi.tambahData();
+					transaksi.tambah();
 					break;
 					
 				case 5:
@@ -67,7 +73,6 @@ public class Main {
 					break;
 					
 				case 6:
-					Login.ulang=2;
 					System.out.println("\n");
 					Program.main(null);
 					break;
@@ -153,10 +158,10 @@ public class Main {
 	
 	public static void menuBarang() throws Exception {
 		
-		BarangFunction barang = new BarangFunction();
-		Restock stock = new Restock();
+		KelolaBarang barang = new KelolaBarang();
+		Restock restock = new Restock();
 		
-		barang.lihatData();
+		barang.getAll();
 		
 		System.out.println("\n\n--DATA MASTER BARANG--");
 		System.out.println("1. Tambah data barang");
@@ -177,19 +182,19 @@ public class Main {
 				break;
 				
 			case 2:
-				barang.editData();
+				barang.edit();
 				break;
 				
 			case 3:
-				barang.hapusData();
+				barang.hapus();
 				break;
 				
 			case 4: 
-				barang.cariData();
+				barang.cari();
 				break;
 				
 			case 5:
-				stock.restock();
+				restock.restock();
 				break;
 			case 0:
 				mainMenu();
@@ -211,8 +216,8 @@ public class Main {
 	
 	public static void menuTransaksi() throws Exception {
 		
-		Transaksi transaksi = new Transaksi();
-		transaksi.lihatData();
+		KelolaTransaksi transaksi = new KelolaTransaksi();
+		transaksi.lihat();
 		
 		System.out.println("\n\n--DATA MASTER TRANSAKSI--");
 		System.out.println("1. Hapus data transaksi");
@@ -227,14 +232,14 @@ public class Main {
 			
 		
 			case 1:
-				transaksi.hapusData();
+				transaksi.hapus();
 				break;
 				
 			case 2:
-				transaksi.cariData();
+				transaksi.cari();
 				break;
 			case 0:
-				menuBarang();
+				mainMenu();
 				break;
 				
 			default :

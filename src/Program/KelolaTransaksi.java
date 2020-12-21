@@ -1,11 +1,13 @@
 package Program;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Stack;
 import java.util.TreeMap;
 
-public class TransaksiFunction {
+public class KelolaTransaksi {
 	
 
 	static  String DB_URL = "jdbc:mysql://localhost:3306/tb_bpl";
@@ -15,9 +17,12 @@ public class TransaksiFunction {
 	static Connection conn;
 	static Statement stmt;
 	static PreparedStatement statement;
-	TransaksiData transaksiData;
+	Transaksi transaksiData;
+	KelolaBarang kelolabarang = new KelolaBarang();
+	Date date = new Date();
+	Scanner scn = new Scanner(System.in);
 
-	public TransaksiFunction(){
+	public KelolaTransaksi(){
 		
 		try {
 			
@@ -30,12 +35,53 @@ public class TransaksiFunction {
 	
 	
 	//	Input data penjualan
-	public Integer tambah(String date, TreeMap<String, Integer> jual) {
+	public void tambah() throws Exception {
 		
 		
 		Integer tambah = 0; 
 		Integer i;
 		Integer total = 0;
+		
+		
+		
+		String ada;
+		TreeMap<String, Integer> jual = new TreeMap<>();
+		
+		
+		  ArrayList<Barang> listBarang =  kelolabarang.getAll();
+	        
+
+		System.out.println("\n\n--PENJUALAN--");
+		
+		String tanggal = String.format("%tF", date);
+		
+		do {
+			
+			System.out.print("Nama Barang : ");
+			String nama = scn.next();
+			String namafix = nama.substring(0, 1).toUpperCase() + nama.substring(1);
+			
+			System.out.print("Jumlah : ");
+			Integer jumlah = scn.nextInt();
+			
+			jual.put(namafix, jumlah);
+			
+			System.out.print("Ada lagi??..(y/t)");
+			ada = scn.next();
+			
+		} while(ada.equalsIgnoreCase("y"));	
+		
+		
+		if(ada.equalsIgnoreCase("t")) {
+		
+			
+			
+			
+			
+		
+		
+		
+		
 		
 		try {			
 			
@@ -72,7 +118,7 @@ public class TransaksiFunction {
 			String query = "INSERT INTO transaksi VALUES(?,?,?)";
 			statement = conn.prepareStatement(query);
 			statement.setString(1, noresifix);
-			statement.setString(2, date);
+			statement.setString(2, tanggal);
 			statement.setString(3, dataUser.user); 
 			statement.executeUpdate();
 			
@@ -84,6 +130,7 @@ public class TransaksiFunction {
 				statement.setString(1, (String) list.getKey());
 				ResultSet rs = statement.executeQuery();
 				
+				if(rs.next()) {
 				String sql = "INSERT INTO detail_transaksi(sku, noresi, jumlah, harga) VALUES(?,?,?,?)";
 				statement = conn.prepareStatement(sql);
 				statement.setString(1, rs.getString("sku"));
@@ -100,7 +147,13 @@ public class TransaksiFunction {
 				statement.setInt(1, rs.getInt("stock")-(Integer) list.getValue());
 				statement.setString(2, rs.getString("sku"));
 				statement.executeUpdate();
+				}
 				
+			}
+			if (tambah==1) {
+				jual.clear();
+				System.out.println("Transaksi berhasil ditambahkan");
+				Main.mainMenu();
 			}
 			
 			System.out.println("Total belanja : " + total);
@@ -109,15 +162,17 @@ public class TransaksiFunction {
 			System.out.println("Terjadi kesalahan"+ e.getMessage());
 		}
 		
-		return tambah;
+		}
+		
+		
 		
 	}
 	
 	
 	//	Lihat data barang
-	public Stack<TransaksiData> lihat(){
+	public void lihat(){
 		
-		Stack<TransaksiData> listTransaksi = new Stack<>();
+		Stack<Transaksi> listTransaksi = new Stack<>();
 		
 		try {
 			
@@ -129,7 +184,7 @@ public class TransaksiFunction {
 			ResultSet result = stmt.executeQuery(query);
 			
 			while(result.next()) {
-				transaksiData = new TransaksiData(
+				transaksiData = new Transaksi(
 						result.getString("noresi"),
 						result.getString("username"), 
 						result.getString("tanggal"),
@@ -137,20 +192,54 @@ public class TransaksiFunction {
 						result.getInt("jumlah"),
 						result.getInt("harga")
 				);
-				listTransaksi.add((TransaksiData) transaksiData);
+				listTransaksi.add((Transaksi) transaksiData);
 			}
 			
 		} catch (SQLException e) {
 			System.out.println("Terjadi kesalahan");
 		}
+		System.out.println("\n\n--DAFTAR TRANSAKSI--");
 		
-		return listTransaksi;
+		System.out.print("Noresi");
+        System.out.print("\t");
+        System.out.print("Username");
+        System.out.print("\t");
+        System.out.print("Tanggal");
+        System.out.print("\t\t");
+        System.out.print("Nama Barang");
+        System.out.print("\t");
+        System.out.print("Jumlah");
+        System.out.print("\t\t");
+        System.out.println("Total");
+        
+        for(Transaksi list : listTransaksi) {
+        	
+        	System.out.print(list.noresi);
+            System.out.print("\t");
+            System.out.print(list.username);
+            System.out.print("\t\t");
+            System.out.print(list.date);
+            System.out.print("\t");
+            System.out.print(list.namaBarang);
+            System.out.print("\t\t");
+            System.out.print(list.jumlah);
+            System.out.print("\t\t");
+            System.out.println(list.total);
+        	
+        }
+        
 		
 	}
 	
 	
 	//	Hapus data transaksi
-	public Integer hapus(String noresi) {
+	public void hapus() throws Exception {
+		
+		System.out.println("\n\n--HAPUS DATA TRANSAKSI--");
+		
+		lihat();
+		System.out.print("Noresi : ");
+		String noresi = scn.next().toUpperCase();
 		
 		Integer hapus = 0;
 		
@@ -166,19 +255,31 @@ public class TransaksiFunction {
 			statement.setString(1, noresi);
 			hapus = statement.executeUpdate();
 			
+			if (hapus==1) {
+				System.out.println("Transaksi berhasil dihapus");
+				Main.mainMenu();
+			}
+			else {
+			System.out.println("Noresi tidak ditemukan");
+			Main.mainMenu();
+			}
+			
 		} catch (SQLException e) {
 			System.out.println("Terjadi kesalahan");
 		}
 		
-		return hapus;
 		
 	}
 	
 	
 	//	Cari data transaksi
-	public ArrayList<TransaksiData> cari(String username){
+	public void cari(){
 		
-		ArrayList<TransaksiData> cari = new ArrayList<>();
+		System.out.println("\n\n--PENCARIAN DATA TRANSAKSI--");
+		System.out.print("Username : ");
+		String username = scn.next();
+		
+		ArrayList<Transaksi> cari = new ArrayList<>();
 		
 		try {
 			
@@ -191,7 +292,7 @@ public class TransaksiFunction {
 			ResultSet result = statement.executeQuery();
 			
 			while(result.next()) {
-				transaksiData = new TransaksiData(
+				transaksiData = new Transaksi(
 						result.getString("noresi"),
 						result.getString("username"), 
 						result.getString("tanggal"),
@@ -202,74 +303,41 @@ public class TransaksiFunction {
 				cari.add(transaksiData);
 			}
 			
+			System.out.print("Noresi");
+	        System.out.print("\t");
+	        System.out.print("Username");
+	        System.out.print("\t");
+	        System.out.print("Tanggal");
+	        System.out.print("\t\t");
+	        System.out.print("Nama Barang");
+	        System.out.print("\t");
+	        System.out.print("Jumlah");
+	        System.out.print("\t\t");
+	        System.out.println("Total");
+	        
+	        for(Transaksi list : cari) {
+	        	
+	        	System.out.print(list.noresi);
+	            System.out.print("\t");
+	            System.out.print(list.username);
+	            System.out.print("\t\t");
+	            System.out.print(list.date);
+	            System.out.print("\t");
+	            System.out.print(list.namaBarang);
+	            System.out.print("\t\t");
+	            System.out.print(list.jumlah);
+	            System.out.print("\t\t");
+	            System.out.println(list.total);
+	        	
+	        }
+	        
+	        Main.tunggu();
+			
 		} catch (SQLException e) {
 			System.out.println("Terjadi kesalahan");
 		}
 		
-		return cari;
 		
-	}
-	
-	
-	//	Edit data transaksi
-	public Integer edit(TransaksiData transaksiData) {
-		
-		Integer edit = 0;
-		try {
-			
-			//	cek sku dari barang
-			String stock = "SELECT sku, stock FROM barang WHERE nama=?";
-			statement = conn.prepareStatement(stock);
-			statement.setString(1, transaksiData.namaBarang);
-			ResultSet rsstock = statement.executeQuery();
-			rsstock.next();
-			
-			//	cek sku dan jumlah
-			String cek = "SELECT jumlah, sku FROM detail_transaksi WHERE noresi=? AND sku=?";
-			statement = conn.prepareStatement(cek);
-			statement.setString(1, transaksiData.noresi);
-			statement.setString(2, rsstock.getString("sku"));
-			ResultSet rscek = statement.executeQuery();
-			
-			if(rscek.next()) {
-				
-				String query = "UPDATE detail_transaksi SET jumlah=? WHERE noresi=? AND sku=?";
-				statement = conn.prepareStatement(query);
-				statement.setInt(1, transaksiData.jumlah);
-				statement.setString(2, transaksiData.noresi);
-				statement.setString(3, rsstock.getString("sku"));
-				edit = statement.executeUpdate();
-				
-				if(transaksiData.jumlah > rscek.getInt("jumlah")) {
-					
-					String barang = "UPDATE barang SET stock=? WHERE nama=?";
-					statement = conn.prepareStatement(barang);
-					statement.setInt(1, rsstock.getInt("stock") - (transaksiData.jumlah-rscek.getInt("jumlah")));
-					statement.setString(2, transaksiData.namaBarang);
-					statement.executeUpdate();
-					
-				} else if(transaksiData.jumlah < rscek.getInt("jumlah")) {
-					
-					String barang = "UPDATE barang SET stock=? WHERE nama=?";
-					statement = conn.prepareStatement(barang);
-					statement.setInt(1, rsstock.getInt("stock") + (rscek.getInt("jumlah")-transaksiData.jumlah));
-					statement.setString(2, transaksiData.namaBarang);
-					statement.executeUpdate();
-					
-				} else if (transaksiData.jumlah == rscek.getInt("jumlah")) {
-					System.out.println("Jumlah barang sama saja");
-				}
-				
-			} else {
-				System.out.println("Transaksi gagal diupdate");
-			}
-				
-		} catch (SQLException e) {
-			System.out.println("Terjadi kesalahan");
-			e.printStackTrace();
-		}
-		
-		return edit;
 		
 	}
 
