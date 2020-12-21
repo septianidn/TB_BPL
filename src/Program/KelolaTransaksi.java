@@ -150,13 +150,13 @@ public class KelolaTransaksi {
 				}
 				
 			}
+			System.out.println("Total belanja : " + total);
 			if (tambah==1) {
 				jual.clear();
 				System.out.println("Transaksi berhasil ditambahkan");
 				Main.mainMenu();
 			}
 			
-			System.out.println("Total belanja : " + total);
 			
 		} catch (SQLException e) {
 			System.out.println("Terjadi kesalahan"+ e.getMessage());
@@ -220,8 +220,15 @@ public class KelolaTransaksi {
             System.out.print("\t\t");
             System.out.print(list.date);
             System.out.print("\t");
-            System.out.print(list.namaBarang);
-            System.out.print("\t\t");
+            
+            if(list.namaBarang.length()<6){
+            	System.out.print(list.namaBarang);
+            	System.out.print("\t\t");
+            }
+            else {
+            	System.out.print(list.namaBarang);
+            	System.out.print("\t");
+            }
             System.out.print(list.jumlah);
             System.out.print("\t\t");
             System.out.println(list.total);
@@ -323,8 +330,14 @@ public class KelolaTransaksi {
 	            System.out.print("\t\t");
 	            System.out.print(list.date);
 	            System.out.print("\t");
-	            System.out.print(list.namaBarang);
-	            System.out.print("\t\t");
+	            if(list.namaBarang.length()<6){
+	            	System.out.print(list.namaBarang);
+	            	System.out.print("\t\t");
+	            }
+	            else {
+	            	System.out.print(list.namaBarang);
+	            	System.out.print("\t");
+	            }
 	            System.out.print(list.jumlah);
 	            System.out.print("\t\t");
 	            System.out.println(list.total);

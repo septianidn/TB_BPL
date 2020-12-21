@@ -84,11 +84,11 @@ public class User implements kelola {
         System.out.println("Email");
 		
 		for(dataUser datauseer : searchList){
-            System.out.print(datauser.username);
+            System.out.print(datauseer.username);
             System.out.print("\t\t");
-            System.out.print(datauser.date);
+            System.out.print(datauseer.date);
             System.out.print("\t\t");
-            System.out.println(datauser.email);
+            System.out.println(datauseer.email);
         }	
 		Main.tunggu();
 	}

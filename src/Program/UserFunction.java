@@ -240,7 +240,7 @@ public class UserFunction {
 			delete = statement.executeUpdate();	
 		}
 		catch (SQLException e) {
-			System.out.println("Terjadi kesalahan");
+			System.out.println("Terjadi kesalahan" +e.getMessage());
 		}		
 		return delete;		
 	}

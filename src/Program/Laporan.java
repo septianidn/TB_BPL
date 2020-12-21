@@ -245,7 +245,13 @@ public class Laporan {
 			System.out.print(result.getDate("tanggal") + "\t");
 			System.out.print(result.getString("noresi") + "\t");
 			System.out.print(result.getString("sku") + "\t");
-			System.out.print(result.getString("nama") + "\t\t");
+			
+			if(result.getString("nama").length()<6) {
+				System.out.print(result.getString("nama") + "\t\t");
+			}
+			else {
+				System.out.print(result.getString("nama") + "\t");
+			}
 			System.out.print(result.getInt("jumlah") + "\t");
 			System.out.print("Rp." + result.getInt("harga_beli") + "\t\t");
 			System.out.print("Rp." + result.getInt("harga_jual") + "\t\t");
@@ -375,7 +381,12 @@ public class Laporan {
 				System.out.print(result.getDate("tanggal") + "\t");
 				System.out.print(result.getString("noresi") + "\t");
 				System.out.print(result.getString("sku") + "\t");
-				System.out.print(result.getString("nama") + "\t\t");
+				if(result.getString("nama").length()<6) {
+					System.out.print(result.getString("nama") + "\t\t");
+				}
+				else {
+					System.out.print(result.getString("nama") + "\t");
+				}
 				System.out.print(result.getInt("jumlah") + "\t");
 				System.out.print("Rp." + result.getInt("harga_beli") + "\t\t");
 				System.out.print("Rp." + result.getInt("harga_jual") + "\t\t");

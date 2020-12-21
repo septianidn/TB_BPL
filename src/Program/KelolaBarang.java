@@ -166,7 +166,9 @@ public class KelolaBarang {
 		  	        	
 		  	        	
 		  	        } 
-		  	        Main.menuBarang();
+		  	        System.out.println("Tekan Enter Untuk Melanjutkan");
+		  	        scanner.nextLine();
+		        	  Main.menuBarang();
 		        	}
 			
 		} catch (SQLException e) {
@@ -204,9 +206,6 @@ public class KelolaBarang {
                 System.out.print("Nama ["+rs.getString("nama")+"]: ");
                 String nama = scanner.nextLine();
                 
-                System.out.print("Stok ["+rs.getInt("stock")+"]: ");
-                Integer stok = Integer.parseInt(scanner.nextLine());
-                
                 System.out.print("Harga Beli ["+rs.getInt("harga_beli")+"]: ");
                 Integer hBeli = Integer.parseInt(scanner.nextLine());
                 
@@ -215,15 +214,14 @@ public class KelolaBarang {
                 
                 
                 
-                String update = "UPDATE barang SET  nama = ?, stock = ?, harga_beli = ?, harga_jual = ? WHERE sku = ? "; 
+                String update = "UPDATE barang SET  nama = ?, harga_beli = ?, harga_jual = ? WHERE sku = ? "; 
                 
                 statement = connection.prepareStatement(update);
                
                 statement.setString(1, nama);
-                statement.setInt(2, stok);
-                statement.setInt(3, hBeli);
-                statement.setInt(4, hJual);
-                statement.setString(5, id);
+                statement.setInt(2, hBeli);
+                statement.setInt(3, hJual);
+                statement.setString(4, id);
                 result = statement.executeUpdate();
                 
                 if(result==1) {
@@ -262,7 +260,7 @@ public class KelolaBarang {
               
               String sql = "DELETE FROM barang WHERE sku= ?";
               PreparedStatement statement = connection.prepareStatement(sql);
-              statement.setString(1, id);
+              statement.setString(1, id.toUpperCase());
               result = statement.executeUpdate();
               
               if(result==1) {
@@ -272,7 +270,7 @@ public class KelolaBarang {
               
             
           }catch(SQLException e){
-              System.out.println("Terjadi kesalahan dalam menghapus data");
+              System.out.println("Terjadi kesalahan dalam menghapus data" +e.getMessage());
           }
     	  
     	 
