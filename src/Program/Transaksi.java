@@ -1,5 +1,5 @@
-package id.ac.unand.fti.si;
-
+package Program;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
@@ -24,13 +24,26 @@ public class Transaksi {
 	
 
 	
-	public void tambahData() {
+	public void tambahData() throws Exception {
 		
 		String ada;
 		TreeMap<String, Integer> jual = new TreeMap<>();
 		
 		kelolabarang = new KelolaBarang();
-		kelolabarang.getAll();
+		  ArrayList<Barang> listBarang =  kelolabarang.getAll();
+	        
+	       
+	        
+	        for( Barang barang : listBarang) {
+	        	System.out.println("\n===============================");
+	        	System.out.println("SKU : " + barang.getSKU());
+	        	System.out.println("Nama Barang : " + barang.getNamaBarang());
+	        	System.out.println("Stok : " + barang.getStok());
+	        	System.out.println("Harga Jual : " + barang.getHargaJual());
+	        	System.out.println("Harga Beli : " + barang.getHargaBeli());
+	        	System.out.println("===============================");
+	        	
+	        }
 
 		System.out.println("\n\n--PENJUALAN--");
 		
@@ -57,43 +70,19 @@ public class Transaksi {
 			if(transaksiFunction.tambah(dt, jual) == 1) {
 				jual.clear();
 				System.out.println("Transaksi berhasil ditambahkan");
-				Menu.menuDashboard();
+				Main.mainMenu();
 			}
 			
-			Menu.menuDashboard();
+			Main.mainMenu();
 			
 		}
 		
 	}
 
 
-	public void editData() {
-		
-		System.out.println("\n\n--EDIT DATA TRANSAKSI--");
-		
-		System.out.print("Noresi : ");
-		String noresi = scn.next().toUpperCase();
-		
-		System.out.print("Nama Barang : ");
-		String nama = scn.next();
-		String namafix = nama.substring(0, 1).toUpperCase() + nama.substring(1);
-		
-		System.out.print("Jumlah barang : ");
-		Integer jumlah = scn.nextInt();
-		
-		transaksiData = new TransaksiData(noresi, namafix, jumlah);
-		
-		if(transaksiFunction.edit(transaksiData) == 1) {
-			System.out.println("Transaksi berhasil diupdate");
-			Menu.menuDashboard();
-		} else {
-			Menu.menuDashboard();
-		}
-		
-	}
 
 	
-	public void hapusData() {
+	public void hapusData() throws Exception {
 		
 		System.out.println("\n\n--HAPUS DATA TRANSAKSI--");
 		
@@ -102,10 +91,10 @@ public class Transaksi {
 		
 		if(transaksiFunction.hapus(noresi) == 1) {
 			System.out.println("Transaksi berhasil dihapus");
-			Menu.menuDashboard();
+			Main.mainMenu();
 		} else {
 			System.out.println("Noresi tidak ditemukan");
-			Menu.menuDashboard();
+			Main.mainMenu();
 		}
 		
 	}
@@ -148,7 +137,7 @@ public class Transaksi {
         	
         }
         
-        Menu.tunggu();
+        Main.tunggu();
 		
 	}
 

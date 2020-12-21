@@ -1,4 +1,4 @@
-package id.ac.unand.fti.si;
+package Program;
 
 import java.util.TreeMap;
 

@@ -1,14 +1,12 @@
-package id.ac.unand.fti.si;
-
+package Program;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
 public class UserFunction {
-	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://localhost/TB_BPL?serverTimezone=Asia/Jakarta";
-	static final String USERNAME = "root";
-	static final String PASSWORD = "";
+	static  String DB_URL = "jdbc:mysql://localhost:3306/tb_bpl";
+	static String USERNAME = "root";
+	static  String PASSWORD = "";
 	
 	static Connection conn;
 	static Statement stmt;
@@ -18,13 +16,17 @@ public class UserFunction {
 	Login logIn;
 	SignUp signup;
 
-	public UserFunction(){
+	public UserFunction() throws SQLException{
 		try {
-			Class.forName(JDBC_DRIVER);
+			
 			conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
-		} 
-		catch (SQLException | ClassNotFoundException e) {
-			System.out.println("Tidak terhubung");
+			}
+		catch (SQLException  e) {
+			System.out.println("Tidak terhubung"+ e.getMessage());
+			e.printStackTrace();
+		}
+		finally {
+			
 		}
 	}
 	
@@ -81,13 +83,13 @@ public class UserFunction {
 			}			
 		} 
 		catch (SQLException e) {
-			System.out.println("Terjadi kesalahan");
+			System.out.println("Terjadi kesalahan"+ e.getMessage());
 		}				
 		return login;
 	}
 	
 	
-	public Integer register(dataUser datauser, String confirm) {
+	public Integer register(dataUser datauser, String confirm) throws Exception {
 		user = new User();
 		logIn = new Login();
 		signup = new SignUp();
@@ -141,7 +143,7 @@ public class UserFunction {
 	}
 	
 	
-	public Integer updateData(String passwordLama, String passwordBaru) {
+	public Integer updateData(String passwordLama, String passwordBaru) throws Exception {
 		
 		Integer update = 0;
 		User user = new User();
@@ -170,7 +172,7 @@ public class UserFunction {
 	}
 	
 
-	public Integer deleteData() {	
+	public Integer deleteData() throws SQLException{	
 		Integer delete = 0;		
 		try {			
 			String query = "DELETE FROM user WHERE username=?";

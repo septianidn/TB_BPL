@@ -1,5 +1,4 @@
-package id.ac.unand.fti.si;
-
+package Program;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.sql.*;
@@ -157,9 +156,6 @@ public class KelolaBarang {
             
             if(rs.next()){
                 
-            	
-                System.out.print("SKU ["+rs.getString("sku")+"]: ");
-                String sku = scanner.nextLine();
                 
                 System.out.print("Nama ["+rs.getString("nama")+"]: ");
                 String nama = scanner.nextLine();
@@ -175,15 +171,15 @@ public class KelolaBarang {
                 
                 
                 
-                String update = "UPDATE barang SET sku = ? , nama = ?, stock = ?, harga_beli = ?, harga_jual = ? WHERE sku = ? "; 
+                String update = "UPDATE barang SET  nama = ?, stock = ?, harga_beli = ?, harga_jual = ? WHERE sku = ? "; 
                 
                 statement = connection.prepareStatement(update);
-                statement.setString(1, sku);
-                statement.setString(2, nama);
-                statement.setInt(3, stok);
-                statement.setInt(4, hBeli);
-                statement.setInt(5, hJual);
-                statement.setString(6, id);
+               
+                statement.setString(1, nama);
+                statement.setInt(2, stok);
+                statement.setInt(3, hBeli);
+                statement.setInt(4, hJual);
+                statement.setString(5, id);
                 result = statement.executeUpdate();
                 
                 

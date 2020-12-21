@@ -1,5 +1,5 @@
-package id.ac.unand.fti.si;
-
+package Program;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
@@ -13,7 +13,7 @@ public class Login {
 	static Integer ulang = 2;
 	private String username1 = null, username2 = null, username3 = null;
 	
-	public Login() {
+	public Login() throws SQLException {
 		try {
 			userFunction = new UserFunction();
 		} 
@@ -40,7 +40,7 @@ public class Login {
 		
 	}
 	
-    public void login() {
+    public void login() throws Exception {
     	
     	System.out.println("\n\n>>LOGIN>>");
     	
@@ -78,7 +78,7 @@ public class Login {
 		
 		if(userFunction.login(datauser) == 1) {
 			System.out.println("Login berhasil");
-			Menu.menuDashboard();
+			Main.mainMenu();
 		} 
 		else {
 			while(ulang>0) {

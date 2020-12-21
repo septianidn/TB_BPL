@@ -1,5 +1,4 @@
-package id.ac.unand.fti.si;
-
+package Program;
 public class dataUser {
 	String username;
 	String password;

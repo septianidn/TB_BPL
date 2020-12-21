@@ -1,5 +1,4 @@
-package id.ac.unand.fti.si;
-
+package Program;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Map;
@@ -8,10 +7,10 @@ import java.util.TreeMap;
 
 public class TransaksiFunction {
 	
-	static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://localhost/tbbpl?serverTimezone=Asia/Jakarta";
-	static final String USERNAME = "root";
-	static final String PASSWORD = "";
+
+	static  String DB_URL = "jdbc:mysql://localhost:3306/tb_bpl";
+	static String USERNAME = "root";
+	static String PASSWORD = "";
 	
 	static Connection conn;
 	static Statement stmt;
@@ -21,9 +20,9 @@ public class TransaksiFunction {
 	public TransaksiFunction(){
 		
 		try {
-			Class.forName(JDBC_DRIVER);
+			
 			conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
-		} catch (SQLException | ClassNotFoundException e) {
+		} catch (SQLException  e) {
 			System.out.println("Koneksi tidak tersambung");
 		}
 		
@@ -32,6 +31,7 @@ public class TransaksiFunction {
 	
 	//	Input data penjualan
 	public Integer tambah(String date, TreeMap<String, Integer> jual) {
+		
 		
 		Integer tambah = 0; 
 		Integer i;
@@ -53,10 +53,11 @@ public class TransaksiFunction {
 			
 			//	cek nomor resi terakhir
 			String ambilresi = "SELECT noresi FROM transaksi WHERE noresi IN (SELECT MAX(noresi) FROM transaksi)";
-			stmt= conn.createStatement();
+			stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(ambilresi);
 			
-			if(!result.next()) {
+			
+			if(result.next()) {
 				String dapatresi = result.getString("noresi");
 				String noresi = dapatresi.substring(1);
 				i = Integer.parseInt(noresi);
@@ -67,11 +68,12 @@ public class TransaksiFunction {
 			
 			String noresifix = "T" + i.toString();
 			
+			
 			String query = "INSERT INTO transaksi VALUES(?,?,?)";
 			statement = conn.prepareStatement(query);
 			statement.setString(1, noresifix);
 			statement.setString(2, date);
-			statement.setString(3, UserData.usr);
+			statement.setString(3, dataUser.user); 
 			statement.executeUpdate();
 			
 			for(Map.Entry list : jual.entrySet()) {
@@ -81,7 +83,6 @@ public class TransaksiFunction {
 				statement = conn.prepareStatement(ambilsku);
 				statement.setString(1, (String) list.getKey());
 				ResultSet rs = statement.executeQuery();
-				rs.next();
 				
 				String sql = "INSERT INTO detail_transaksi(sku, noresi, jumlah, harga) VALUES(?,?,?,?)";
 				statement = conn.prepareStatement(sql);
@@ -105,7 +106,7 @@ public class TransaksiFunction {
 			System.out.println("Total belanja : " + total);
 			
 		} catch (SQLException e) {
-			System.out.println("Terjadi kesalahan");
+			System.out.println("Terjadi kesalahan"+ e.getMessage());
 		}
 		
 		return tambah;

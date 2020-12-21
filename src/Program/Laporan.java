@@ -1,5 +1,4 @@
-package id.ac.unand.fti.si;
-
+package Program;
 import java.sql.*;
 import java.util.Scanner;
 
@@ -39,7 +38,7 @@ public class Laporan {
 
 			} while (cek == 0);
 
-			Connection conn = DriverManager.getConnection(url, user, password);
+			Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
 			Statement statement = conn.createStatement();
 
 			String sql = "SELECT detail_transaksi.id, transaksi.tanggal, detail_transaksi.sku, detail_transaksi.noresi, transaksi.username, detail_transaksi.jumlah, detail_transaksi.harga\r\n"
@@ -162,12 +161,12 @@ public class Laporan {
 
 			} while (cek1 == 0);
 
-			Connection conn = DriverManager.getConnection(url, user, password);
+			Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
 			Statement statement = conn.createStatement();
 
 			String sql = "SELECT detail_transaksi.id, transaksi.tanggal, detail_transaksi.sku, detail_transaksi.noresi, transaksi.username, detail_transaksi.jumlah, detail_transaksi.harga\r\n"
 					+ "	FROM detail_transaksi,transaksi\r\n"
-					+ "	WHERE transaksi.noresi = detail_transaksi.noresi AND EXTRACT (MONTH FROM tanggal) = " + bln +" ORDER BY tanggal ASC";
+					+ "	WHERE transaksi.noresi = detail_transaksi.noresi AND MONTH(transaksi.tanggal) = '" + bln +"' ORDER BY tanggal ASC";
 
 			ResultSet result = statement.executeQuery(sql);
 
@@ -194,7 +193,7 @@ public class Laporan {
 
 		} catch (SQLException e) {
 
-			System.out.println("\nAda yang Salah Pada Inputan barusan!!");
+			System.out.println("\nAda yang Salah Pada Inputan barusan!!" + e.getMessage());
 		}
 	}
 
@@ -228,7 +227,7 @@ public class Laporan {
 
 		} while (cek == 0);
 
-		Connection conn = DriverManager.getConnection(url, user, password);
+		Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
 		Statement statement = conn.createStatement();
 		
 		String sql = "SELECT detail_transaksi.id, transaksi.tanggal, detail_transaksi.noresi, detail_transaksi.sku, barang.nama, detail_transaksi.jumlah, barang.harga_beli, barang.harga_jual\r\n"
@@ -357,12 +356,12 @@ public class Laporan {
 				}
 			} while (cek1 == 0);
 
-			Connection conn = DriverManager.getConnection(url, user, password);
+			Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
 			Statement statement = conn.createStatement();
 
 			String sql = "SELECT detail_transaksi.id, transaksi.tanggal, detail_transaksi.noresi, detail_transaksi.sku, barang.nama, detail_transaksi.jumlah, barang.harga_beli, barang.harga_jual\r\n"
 					+ "	FROM detail_transaksi,transaksi,barang\r\n"
-					+ "	WHERE transaksi.noresi = detail_transaksi.noresi AND detail_transaksi.sku = barang.sku AND EXTRACT (MONTH FROM tanggal) = "
+					+ "	WHERE transaksi.noresi = detail_transaksi.noresi AND detail_transaksi.sku = barang.sku AND MONTH(transaksi.tanggal) = "
 					+ bln + " ORDER BY tanggal ASC";
 
 			ResultSet result = statement.executeQuery(sql);
@@ -395,7 +394,7 @@ public class Laporan {
 
 		} catch (SQLException e) {
 
-			System.out.println("\nAda yang Salah Pada Inputan barusan!!");
+			System.out.println("\nAda yang Salah Pada Inputan barusan!!"+ e.getMessage());
 		}
 
 	}

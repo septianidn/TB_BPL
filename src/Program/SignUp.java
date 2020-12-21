@@ -1,5 +1,5 @@
-package id.ac.unand.fti.si;
-
+package Program;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -10,17 +10,18 @@ public class SignUp extends User{
 	Login login = new Login();
 	dataUser datauser;
 		
-		public SignUp() {
+		public SignUp() throws SQLException {
 			try {
 				userFunction = new UserFunction();
 			} 
 			catch (NullPointerException e) {
 				System.out.println("Masukkan data terlebih dahulu");
-			}
+				}
+			
 		}
 
 		// Register data
-		public void tambahData(){
+		public void tambahData() throws Exception{
 			System.out.println("\n\n>>SIGN UP>>");
 
 			System.out.print("Username : ");

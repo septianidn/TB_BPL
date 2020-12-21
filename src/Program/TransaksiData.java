@@ -1,5 +1,4 @@
-package id.ac.unand.fti.si;
-
+package Program;
 public class TransaksiData {
 
 	String noresi;

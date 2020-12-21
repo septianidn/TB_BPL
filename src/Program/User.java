@@ -1,7 +1,7 @@
-package id.ac.unand.fti.si;
-
+package Program;
 import java.util.Scanner;
 import java.util.TreeMap;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -13,7 +13,7 @@ public class User implements kelola {
 	UserFunction userFunction;
 	Login login = new Login();
 	
-	public User() {
+	public User() throws SQLException {
 		try {
 			userFunction = new UserFunction();
 		} 
@@ -24,12 +24,12 @@ public class User implements kelola {
 
 	// Register data
 	@Override
-	public void tambahData(){
+	public void tambahData() throws Exception{
 
 	}
 
 	@Override
-	public void editData(){
+	public void editData() throws Exception{
 		System.out.println("\n\n>>UBAH PASSWORD>>");
 		
 		System.out.print("Password lama : ");
@@ -40,7 +40,7 @@ public class User implements kelola {
 		
 		if(userFunction.updateData(passwordLama, passwordBaru) == 1) {
 			System.out.println("Password berhasil diperbarui");
-			Menu.menuDashboard();
+			Main.mainMenu();
 		} 
 		else {
 			System.out.println("Gagal memperbarui password");
@@ -50,7 +50,7 @@ public class User implements kelola {
 
 	
 	@Override
-	public void hapusData(){
+	public void hapusData() throws Exception{
 		System.out.println("\n\n>>HAPUS DATA USER<<");
 
 		System.out.print("Apakah anda yakin untuk menghapus akun anda ?..(y/t)  ");
@@ -63,7 +63,7 @@ public class User implements kelola {
 			}
 		} 
 		else{
-			Menu.menuDashboard();
+			Main.mainMenu();
 		}
 	}
 
@@ -90,7 +90,7 @@ public class User implements kelola {
             System.out.print("\t\t");
             System.out.println(datauser.email);
         }	
-		Menu.tunggu();
+		Main.tunggu();
 	}
 
 
@@ -115,7 +115,7 @@ public class User implements kelola {
             System.out.print("\t\t");
             System.out.println(listUser.email);
         }		
-		Menu.tunggu();
+		Main.tunggu();
 	}	
 }
 
